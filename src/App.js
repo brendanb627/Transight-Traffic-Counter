@@ -3,13 +3,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from './Screens/home-screen';
+import { CountScreen } from './Screens/count-screen';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
    <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
+    <StatusBar/>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={CountScreen} />
       <Stack.Screen name="Count" component={CountScreen} />
     </Stack.Navigator>
    </NavigationContainer>
@@ -19,7 +21,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
     alignItems: 'center',
     justifyContent: 'center',
   },
