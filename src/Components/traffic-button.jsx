@@ -21,13 +21,17 @@ export const TrafficButton = ({
   traffic,
   setTraffic,
   location,
+  countStarted,
+  setCountStarted
 }) => {
   const [buttonDistance, setButtonDistance] = useState(0);
   const [buttonPressing, setButtonPressing] = useState(false);
   const [trafficType, setTrafficType] = useState("normal");
   const [buttonPressed, setButtonPressed] = useState(false);
+  const [startDate, setStartDate] = useState(0)
 
   const buttonRelease = () => {
+    console.log(Date.now())
     Haptic.impactAsync(Haptic.ImpactFeedbackStyle.Medium);
     handlePress();
     setButtonPressing(false);
@@ -72,6 +76,10 @@ export const TrafficButton = ({
   };
 
   const handlePress = () => {
+    if (countStarted == false) {
+      setCountStarted(true);
+      setStartDate(Date.now())
+    }
     if (!buttonPressed) {
       setButtonPressed(true);
       if (trafficType == "normal") {
@@ -84,7 +92,10 @@ export const TrafficButton = ({
         } else if (ButtonType == "left") {
           setTraffic({
             ...traffic,
-            left: traffic.left + 1,
+            left: {...traffic.left,
+              count: traffic.left.count + 1,
+              time: traffic.left.time + Date.now() - startDate,
+            },
           });
           console.log(traffic.left);
         } else if (ButtonType == "right") {
