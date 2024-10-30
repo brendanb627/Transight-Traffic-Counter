@@ -22,20 +22,19 @@ export const TrafficButton = ({
   setTraffic,
   location,
   countStarted,
-  setCountStarted
+  setCountStarted,
+  setHighestTime,
+  startDate
 }) => {
   const [buttonDistance, setButtonDistance] = useState(0);
   const [buttonPressing, setButtonPressing] = useState(false);
   const [trafficType, setTrafficType] = useState("normal");
   const [buttonPressed, setButtonPressed] = useState(false);
-  const [startDate, setStartDate] = useState(0)
 
   const buttonRelease = () => {
-    console.log(Date.now())
     Haptic.impactAsync(Haptic.ImpactFeedbackStyle.Medium);
-    handlePress();
     setButtonPressing(false);
-    setButtonPressed(false);
+    handlePress();
   };
 
   const drag = Gesture.Pan().onChange((event) => {
@@ -60,10 +59,6 @@ export const TrafficButton = ({
   }, [buttonDistance >= 100]);
 
   useEffect(() => {
-    console.log(traffic);
-  }, [traffic]);
-
-  useEffect(() => {
     Haptic.impactAsync(Haptic.ImpactFeedbackStyle.Medium);
     if (buttonDistance > 50 && buttonDistance < 100) {
       setTrafficType("bike");
@@ -74,11 +69,11 @@ export const TrafficButton = ({
     setButtonPressing(true);
     setButtonDistance(locationX);
   };
-
+  var tempCount = 0
   const handlePress = () => {
+    console.log(`Button pressed!${tempCount += 1}`)
     if (countStarted == false) {
       setCountStarted(true);
-      setStartDate(Date.now())
     }
     if (!buttonPressed) {
       setButtonPressed(true);
@@ -87,46 +82,44 @@ export const TrafficButton = ({
           setTraffic({
             ...traffic,
             through: traffic.through + 1,
+            throughTime: [...traffic.throughTime, Date.now() - startDate], 
           });
-          console.log(traffic.through);
+          setHighestTime(Date.now() - startDate);
+
         } else if (ButtonType == "left") {
           setTraffic({
             ...traffic,
-            left: {...traffic.left,
-              count: traffic.left.count + 1,
-              time: traffic.left.time + Date.now() - startDate,
-            },
+            left: traffic.left + 1,
+            leftTime: [...traffic.leftTime, Date.now() - startDate], 
           });
-          console.log(traffic.left);
+          setHighestTime(Date.now() - startDate);
+
         } else if (ButtonType == "right") {
           setTraffic({
             ...traffic,
             right: traffic.right + 1,
+            rightTime: [...traffic.rightTime, Date.now() - startDate], 
           });
-          console.log(traffic.right);
+          setHighestTime(Date.now() - startDate);
         } else {
           console.log("error with input on traffic button, check spelling");
         }
       } else if (trafficType == "heavy") {
-        console.log("heavy");
         if (ButtonType == "through") {
           setTraffic({
             ...traffic,
             heavyThrough: traffic.heavyThrough + 1,
           });
-          console.log(traffic.heavyThrough);
         } else if (ButtonType == "left") {
           setTraffic({
             ...traffic,
             heavyLeft: traffic.heavyLeft + 1,
           });
-          console.log(traffic.heavyLeft);
         } else if (ButtonType == "right") {
           setTraffic({
             ...traffic,
             heavyRight: traffic.heavyRight + 1,
           });
-          console.log(traffic.heavyRight);
         } else {
           console.log("error with input on traffic button, check spelling");
         }
@@ -136,19 +129,16 @@ export const TrafficButton = ({
             ...traffic,
             bikeThrough: traffic.bikeThrough + 1,
           });
-          console.log(traffic.bikeThrough);
         } else if (ButtonType == "left") {
           setTraffic({
             ...traffic,
             bikeLeft: traffic.bikeLeft + 1,
           });
-          console.log(traffic.bikeLeft);
         } else if (ButtonType == "right") {
           setTraffic({
             ...traffic,
             bikeRight: traffic.bikeRight + 1,
           });
-          console.log(traffic.bikeRight);
         } else {
           console.log("error with input on traffic button, check spelling");
         }
@@ -160,16 +150,16 @@ export const TrafficButton = ({
   };
 
   return (
-    <GestureHandlerRootView  style={{position: 'absolute'}}>
+    <GestureHandlerRootView style={{ position: "absolute" }}>
       <View
-      style={{
-        position: 'absolute'
-      }}
+        style={{
+          position: "absolute",
+        }}
       >
         <GestureDetector gesture={gestures}>
           <TouchableOpacity
             style={{
-              position: 'absolute',
+              position: "absolute",
               top: location[3],
               left: location[4],
               width: 75,
@@ -179,7 +169,7 @@ export const TrafficButton = ({
               backgroundColor: "#32a852",
               borderRadius: 15,
             }}
-            onPress={handlePress}
+            onPressOut={() => setButtonPressed(false)}
           >
             <Text style={styles.buttonText}>
               {ButtonType === "through"
@@ -193,7 +183,7 @@ export const TrafficButton = ({
           </TouchableOpacity>
         </GestureDetector>
         {buttonPressing && buttonDistance > 100 && (
-          <View style={styles.bar}>
+          <View>
             <Image
               source={require("../assets/newTruckOutline.png")}
               style={{
@@ -208,7 +198,7 @@ export const TrafficButton = ({
           </View>
         )}
         {!buttonPressing && (
-          <View style={styles.bar}>
+          <View>
             <Image
               source={require("../assets/arrowIcon.png")}
               style={{

@@ -17,10 +17,20 @@ import { Link } from "expo-router";
 import { FormatModal } from "../Components/format-modal";
 
 const CountScreen = () => {
+
   const [northBound, setNorthBound] = useState({
     through: 0,
     left: 0,
     right: 0,
+    rightTime: [],
+    leftTime: [],
+    throughTime: [],
+    heavyRightTime: [],
+    heavyLeftTime: [],
+    heavyThroughTime: [],
+    bikeLeftTime: [],
+    bikeRightTime: [],
+    bikeThroughTime: [],
     bikeThrough: 0,
     bikeLeft: 0,
     bikeRight: 0,
@@ -32,6 +42,15 @@ const CountScreen = () => {
     through: 0,
     left: 0,
     right: 0,
+    rightTime: [],
+    leftTime: [],
+    throughTime: [],
+    heavyRightTime: [],
+    heavyLeftTime: [],
+    heavyThroughTime: [],
+    bikeLeftTime: [],
+    bikeRightTime: [],
+    bikeThroughTime: [],
     bikeThrough: 0,
     bikeLeft: 0,
     bikeRight: 0,
@@ -43,6 +62,15 @@ const CountScreen = () => {
     through: 0,
     left: 0,
     right: 0,
+    rightTime: [],
+    leftTime: [],
+    throughTime: [],
+    heavyRightTime: [],
+    heavyLeftTime: [],
+    heavyThroughTime: [],
+    bikeLeftTime: [],
+    bikeRightTime: [],
+    bikeThroughTime: [],
     bikeThrough: 0,
     bikeLeft: 0,
     bikeRight: 0,
@@ -54,6 +82,15 @@ const CountScreen = () => {
     through: 0,
     left: 0,
     right: 0,
+    rightTime: [],
+    leftTime: [],
+    throughTime: [],
+    heavyRightTime: [],
+    heavyLeftTime: [],
+    heavyThroughTime: [],
+    bikeLeftTime: [],
+    bikeRightTime: [],
+    bikeThroughTime: [],
     bikeThrough: 0,
     bikeLeft: 0,
     bikeRight: 0,
@@ -64,6 +101,8 @@ const CountScreen = () => {
 
   const [countStarted, setCountStarted] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [highestTime, setHighestTime] = useState(0);
+  const [startDate, setStartDate] = useState(0);
 
   const resetCounts = () => {
     Alert.alert(
@@ -81,6 +120,15 @@ const CountScreen = () => {
               through: 0,
               left: 0,
               right: 0,
+              rightTime: [0],
+              leftTime: [0],
+              throughTime: [0],
+              heavyRightTime: [0],
+              heavyLeftTime: [0],
+              heavyThroughTime: [0],
+              bikeLeftTime: [0],
+              bikeRightTime: [0],
+              bikeThroughTime: [0],
               bikeThrough: 0,
               bikeLeft: 0,
               bikeRight: 0,
@@ -92,6 +140,15 @@ const CountScreen = () => {
               through: 0,
               left: 0,
               right: 0,
+              rightTime: [0],
+              leftTime: [0],
+              throughTime: [0],
+              heavyRightTime: [0],
+              heavyLeftTime: [0],
+              heavyThroughTime: [0],
+              bikeLeftTime: [0],
+              bikeRightTime: [0],
+              bikeThroughTime: [0],
               bikeThrough: 0,
               bikeLeft: 0,
               bikeRight: 0,
@@ -103,6 +160,15 @@ const CountScreen = () => {
               through: 0,
               left: 0,
               right: 0,
+              rightTime: [0],
+              leftTime: [0],
+              throughTime: [0],
+              heavyRightTime: [0],
+              heavyLeftTime: [0],
+              heavyThroughTime: [0],
+              bikeLeftTime: [0],
+              bikeRightTime: [0],
+              bikeThroughTime: [0],
               bikeThrough: 0,
               bikeLeft: 0,
               bikeRight: 0,
@@ -114,6 +180,15 @@ const CountScreen = () => {
               through: 0,
               left: 0,
               right: 0,
+              rightTime: [0],
+              leftTime: [0],
+              throughTime: [0],
+              heavyRightTime: [0],
+              heavyLeftTime: [0],
+              heavyThroughTime: [0],
+              bikeLeftTime: [0],
+              bikeRightTime: [0],
+              bikeThroughTime: [0],
               bikeThrough: 0,
               bikeLeft: 0,
               bikeRight: 0,
@@ -121,7 +196,9 @@ const CountScreen = () => {
               heavyLeft: 0,
               heavyRight: 0,
             });
-            setCountStarted(false)
+            setCountStarted(false);
+            setHighestTime(0);
+            setStartDate(Date.now())
           },
         },
       ],
@@ -134,6 +211,7 @@ const CountScreen = () => {
   const csvDownload = async () => {
     setModalVisible(true);
   };
+  
 
   useEffect(() => {
     const lockOrientation = async () => {
@@ -151,9 +229,10 @@ const CountScreen = () => {
   return (
     <View style={styles.container}>
       <StatusBar hidden={true} />
-
       <TrafficButton
+        startDate={startDate}
         countStarted={countStarted}
+        setHighestTime={setHighestTime}
         setCountStarted={setCountStarted}
         ButtonType={"through"}
         setTraffic={setSouthBound}
@@ -161,7 +240,9 @@ const CountScreen = () => {
         location={[5, 8, 90, -196, -50]}
       />
       <TrafficButton
+        startDate={startDate}
         countStarted={countStarted}
+        setHighestTime={setHighestTime}
         setCountStarted={setCountStarted}
         ButtonType={"left"}
         setTraffic={setSouthBound}
@@ -169,7 +250,9 @@ const CountScreen = () => {
         location={[5, 8, 0, -196, 100]}
       />
       <TrafficButton
+        startDate={startDate}
         countStarted={countStarted}
+        setHighestTime={setHighestTime}
         setCountStarted={setCountStarted}
         ButtonType={"right"}
         setTraffic={setSouthBound}
@@ -178,7 +261,9 @@ const CountScreen = () => {
       />
 
       <TrafficButton
+        startDate={startDate}
         countStarted={countStarted}
+        setHighestTime={setHighestTime}
         setCountStarted={setCountStarted}
         ButtonType={"through"}
         setTraffic={setNorthBound}
@@ -186,7 +271,9 @@ const CountScreen = () => {
         location={[5, 8, -90, 80, -50]}
       />
       <TrafficButton
+        startDate={startDate}
         countStarted={countStarted}
+        setHighestTime={setHighestTime}
         setCountStarted={setCountStarted}
         ButtonType={"right"}
         setTraffic={setNorthBound}
@@ -194,7 +281,9 @@ const CountScreen = () => {
         location={[5, 8, 0, 80, 100]}
       />
       <TrafficButton
+        startDate={startDate}
         countStarted={countStarted}
+        setHighestTime={setHighestTime}
         setCountStarted={setCountStarted}
         ButtonType={"left"}
         setTraffic={setNorthBound}
@@ -203,7 +292,9 @@ const CountScreen = () => {
       />
 
       <TrafficButton
+        startDate={startDate}
         countStarted={countStarted}
+        setHighestTime={setHighestTime}
         setCountStarted={setCountStarted}
         ButtonType={"through"}
         setTraffic={setWestBound}
@@ -211,7 +302,9 @@ const CountScreen = () => {
         location={[5, 8, 0, -50, -375]}
       />
       <TrafficButton
+        startDate={startDate}
         countStarted={countStarted}
+        setHighestTime={setHighestTime}
         setCountStarted={setCountStarted}
         ButtonType={"right"}
         setTraffic={setWestBound}
@@ -219,7 +312,9 @@ const CountScreen = () => {
         location={[5, 8, 90, 70, -375]}
       />
       <TrafficButton
+        startDate={startDate}
         countStarted={countStarted}
+        setHighestTime={setHighestTime}
         setCountStarted={setCountStarted}
         ButtonType={"left"}
         setTraffic={setWestBound}
@@ -228,7 +323,9 @@ const CountScreen = () => {
       />
 
       <TrafficButton
+        startDate={startDate}
         countStarted={countStarted}
+        setHighestTime={setHighestTime}
         setCountStarted={setCountStarted}
         ButtonType={"through"}
         setTraffic={setEastBound}
@@ -236,7 +333,9 @@ const CountScreen = () => {
         location={[5, 8, -180, -50, 280]}
       />
       <TrafficButton
+        startDate={startDate}
         countStarted={countStarted}
+        setHighestTime={setHighestTime}
         setCountStarted={setCountStarted}
         ButtonType={"right"}
         setTraffic={setEastBound}
@@ -244,7 +343,9 @@ const CountScreen = () => {
         location={[5, 8, 90, 70, 280]}
       />
       <TrafficButton
+        startDate={startDate}
         countStarted={countStarted}
+        setHighestTime={setHighestTime}
         setCountStarted={setCountStarted}
         ButtonType={"left"}
         setTraffic={setEastBound}
@@ -258,6 +359,7 @@ const CountScreen = () => {
         southBoundInit={southBound}
         eastBoundInit={eastBound}
         westBoundInit={westBound}
+        highestTime={highestTime}
       />
       <Button title="Modal" onPress={() => setModalVisible(true)}></Button>
       <Button title="Reset Counts" onPress={resetCounts} color="red" />
