@@ -8,6 +8,7 @@ import {
   Modal,
   TextInput,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import * as Sharing from "expo-sharing";
 import * as ScreenOrientation from "expo-screen-orientation";
@@ -15,22 +16,23 @@ import { TrafficButton } from "../Components/traffic-button";
 import * as FileSystem from "expo-file-system";
 import { Link } from "expo-router";
 import { FormatModal } from "../Components/format-modal";
+import { PedestrianButton } from "../Components/pedestrian-button";
+import { Touchable } from "react-native";
 
 const CountScreen = () => {
-
   const [northBound, setNorthBound] = useState({
     through: 0,
     left: 0,
     right: 0,
-    rightTime: [],
-    leftTime: [],
-    throughTime: [],
-    heavyRightTime: [],
-    heavyLeftTime: [],
-    heavyThroughTime: [],
-    bikeLeftTime: [],
-    bikeRightTime: [],
-    bikeThroughTime: [],
+    rightTime: [0],
+    leftTime: [0],
+    throughTime: [0],
+    heavyRightTime: [0],
+    heavyLeftTime: [0],
+    heavyThroughTime: [0],
+    bikeLeftTime: [0],
+    bikeRightTime: [0],
+    bikeThroughTime: [0],
     bikeThrough: 0,
     bikeLeft: 0,
     bikeRight: 0,
@@ -42,15 +44,15 @@ const CountScreen = () => {
     through: 0,
     left: 0,
     right: 0,
-    rightTime: [],
-    leftTime: [],
-    throughTime: [],
-    heavyRightTime: [],
-    heavyLeftTime: [],
-    heavyThroughTime: [],
-    bikeLeftTime: [],
-    bikeRightTime: [],
-    bikeThroughTime: [],
+    rightTime: [0],
+    leftTime: [0],
+    throughTime: [0],
+    heavyRightTime: [0],
+    heavyLeftTime: [0],
+    heavyThroughTime: [0],
+    bikeLeftTime: [0],
+    bikeRightTime: [0],
+    bikeThroughTime: [0],
     bikeThrough: 0,
     bikeLeft: 0,
     bikeRight: 0,
@@ -62,15 +64,15 @@ const CountScreen = () => {
     through: 0,
     left: 0,
     right: 0,
-    rightTime: [],
-    leftTime: [],
-    throughTime: [],
-    heavyRightTime: [],
-    heavyLeftTime: [],
-    heavyThroughTime: [],
-    bikeLeftTime: [],
-    bikeRightTime: [],
-    bikeThroughTime: [],
+    rightTime: [0],
+    leftTime: [0],
+    throughTime: [0],
+    heavyRightTime: [0],
+    heavyLeftTime: [0],
+    heavyThroughTime: [0],
+    bikeLeftTime: [0],
+    bikeRightTime: [0],
+    bikeThroughTime: [0],
     bikeThrough: 0,
     bikeLeft: 0,
     bikeRight: 0,
@@ -82,15 +84,15 @@ const CountScreen = () => {
     through: 0,
     left: 0,
     right: 0,
-    rightTime: [],
-    leftTime: [],
-    throughTime: [],
-    heavyRightTime: [],
-    heavyLeftTime: [],
-    heavyThroughTime: [],
-    bikeLeftTime: [],
-    bikeRightTime: [],
-    bikeThroughTime: [],
+    rightTime: [0],
+    leftTime: [0],
+    throughTime: [0],
+    heavyRightTime: [0],
+    heavyLeftTime: [0],
+    heavyThroughTime: [0],
+    bikeLeftTime: [0],
+    bikeRightTime: [0],
+    bikeThroughTime: [0],
     bikeThrough: 0,
     bikeLeft: 0,
     bikeRight: 0,
@@ -106,15 +108,16 @@ const CountScreen = () => {
 
   const resetCounts = () => {
     Alert.alert(
-      "Confirm Reset",
-      "Are you sure you want to reset all counts to 0?",
+      "Confirm New Count",
+      "Are you sure you want to start a new count? Your previous count will be erased. The count starts when you confirim",
       [
         {
           text: "Cancel",
           style: "cancel",
         },
         {
-          text: "OK",
+          text: "START",
+          style: "destructive",
           onPress: () => {
             setNorthBound({
               through: 0,
@@ -198,7 +201,7 @@ const CountScreen = () => {
             });
             setCountStarted(false);
             setHighestTime(0);
-            setStartDate(Date.now())
+            setStartDate(Date.now());
           },
         },
       ],
@@ -211,7 +214,6 @@ const CountScreen = () => {
   const csvDownload = async () => {
     setModalVisible(true);
   };
-  
 
   useEffect(() => {
     const lockOrientation = async () => {
@@ -224,7 +226,7 @@ const CountScreen = () => {
     return () => {
       ScreenOrientation.unlockAsync();
     };
-  }, []);
+  }, [0]);
 
   return (
     <View style={styles.container}>
@@ -352,6 +354,34 @@ const CountScreen = () => {
         traffic={eastBound}
         location={[5, 8, -90, -170, 280]}
       />
+      <PedestrianButton
+        startDate={startDate}
+        setHighestTime={setHighestTime}
+        setTraffic={setEastBound}
+        traffic={eastBound}
+        location={[-25, -25, 0, 145, 170]}
+      />
+      <PedestrianButton
+        startDate={startDate}
+        setHighestTime={setHighestTime}
+        setTraffic={setEastBound}
+        traffic={eastBound}
+        location={[-25, -25, 0, 145, 590]}
+      />
+      <PedestrianButton
+        startDate={startDate}
+        setHighestTime={setHighestTime}
+        setTraffic={setEastBound}
+        traffic={eastBound}
+        location={[-25, -25, 0, 190, 380]}
+      />
+      <PedestrianButton
+        startDate={startDate}
+        setHighestTime={setHighestTime}
+        setTraffic={setEastBound}
+        traffic={eastBound}
+        location={[-25, -25, 0, 100, 380]}
+      />
       <FormatModal
         open={modalVisible}
         setOpen={setModalVisible}
@@ -361,8 +391,33 @@ const CountScreen = () => {
         westBoundInit={westBound}
         highestTime={highestTime}
       />
-      <Button title="Modal" onPress={() => setModalVisible(true)}></Button>
-      <Button title="Reset Counts" onPress={resetCounts} color="red" />
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <Text
+          style={{
+            color: "#2282ff",
+            fontSize: 20,
+            fontWeight: 400,
+            left: -110,
+            top: -15,
+          }}
+        >
+          Menu
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={resetCounts} color="#55ff55">
+        <Text
+          style={{
+            position: 'absolute',
+            color: "#55ff55",
+            fontSize: 20,
+            fontWeight: 400,
+            left: 40,
+            top: -40,
+          }}
+        >
+          New Count
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
