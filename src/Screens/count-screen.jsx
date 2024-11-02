@@ -39,6 +39,8 @@ const CountScreen = () => {
     heavyThrough: 0,
     heavyLeft: 0,
     heavyRight: 0,
+    ped: 0,
+    pedTime: [0],
   });
   const [southBound, setSouthBound] = useState({
     through: 0,
@@ -59,6 +61,8 @@ const CountScreen = () => {
     heavyThrough: 0,
     heavyLeft: 0,
     heavyRight: 0,
+    ped: 0,
+    pedTime: [0],
   });
   const [eastBound, setEastBound] = useState({
     through: 0,
@@ -79,6 +83,8 @@ const CountScreen = () => {
     heavyThrough: 0,
     heavyLeft: 0,
     heavyRight: 0,
+    ped: 0,
+    pedTime: [0],
   });
   const [westBound, setWestBound] = useState({
     through: 0,
@@ -99,6 +105,8 @@ const CountScreen = () => {
     heavyThrough: 0,
     heavyLeft: 0,
     heavyRight: 0,
+    ped: 0,
+    pedTime: [0],
   });
 
   const [countStarted, setCountStarted] = useState(false);
@@ -138,6 +146,8 @@ const CountScreen = () => {
               heavyThrough: 0,
               heavyLeft: 0,
               heavyRight: 0,
+              ped: 0,
+              pedTime: [0],
             });
             setSouthBound({
               through: 0,
@@ -158,6 +168,8 @@ const CountScreen = () => {
               heavyThrough: 0,
               heavyLeft: 0,
               heavyRight: 0,
+              ped: 0,
+              pedTime: [0],
             });
             setEastBound({
               through: 0,
@@ -178,6 +190,8 @@ const CountScreen = () => {
               heavyThrough: 0,
               heavyLeft: 0,
               heavyRight: 0,
+              ped: 0,
+              pedTime: [0],
             });
             setWestBound({
               through: 0,
@@ -198,6 +212,8 @@ const CountScreen = () => {
               heavyThrough: 0,
               heavyLeft: 0,
               heavyRight: 0,
+              ped: 0,
+              pedTime: [0],
             });
             setCountStarted(false);
             setHighestTime(0);
@@ -357,29 +373,29 @@ const CountScreen = () => {
       <PedestrianButton
         startDate={startDate}
         setHighestTime={setHighestTime}
-        setTraffic={setEastBound}
-        traffic={eastBound}
-        location={[-25, -25, 0, 145, 170]}
+        setTraffic={setNorthBound}
+        traffic={northBound}
+        location={[-25, -25, 0, 150, 170]}
       />
       <PedestrianButton
         startDate={startDate}
         setHighestTime={setHighestTime}
         setTraffic={setEastBound}
         traffic={eastBound}
-        location={[-25, -25, 0, 145, 590]}
+        location={[-25, -25, 0, 150, 595]}
       />
       <PedestrianButton
         startDate={startDate}
         setHighestTime={setHighestTime}
-        setTraffic={setEastBound}
-        traffic={eastBound}
-        location={[-25, -25, 0, 190, 380]}
+        setTraffic={setSouthBound}
+        traffic={southBound}
+        location={[-23, -20, 0, 190, 380]}
       />
       <PedestrianButton
         startDate={startDate}
         setHighestTime={setHighestTime}
-        setTraffic={setEastBound}
-        traffic={eastBound}
+        setTraffic={setWestBound}
+        traffic={westBound}
         location={[-25, -25, 0, 100, 380]}
       />
       <FormatModal
@@ -407,7 +423,7 @@ const CountScreen = () => {
       <TouchableOpacity onPress={resetCounts} color="#55ff55">
         <Text
           style={{
-            position: 'absolute',
+            position: "absolute",
             color: "#55ff55",
             fontSize: 20,
             fontWeight: 400,

@@ -31,7 +31,7 @@ export const FormatModal = ({
   const [eastWest, setEastWest] = useState("unnamed_eastWest");
   const [weather, setWeather] = useState("");
   const [startHour, setStartHour] = useState(0);
-  const [interval, setInterval] = useState(0);
+  const [interval, setInterval] = useState(5);
 
   const [position, setPosition] = useState(1);
   const [northBound, setNorthBound] = useState({});
@@ -130,7 +130,7 @@ export const FormatModal = ({
         }
       })
       data.push({
-        period: i,
+        period: lowerBound,
         northThrough: rowCount.northThrough,
         northLeft: rowCount.northLeft,
         northRight: rowCount.northRight,
@@ -210,6 +210,7 @@ export const FormatModal = ({
             />
             <TextInput
               placeholder="Start Hour"
+              defaultValue="4"
               inputMode="numeric"
               style={{
                 position: "absolute",
@@ -230,6 +231,7 @@ export const FormatModal = ({
             <TextInput
               placeholder="Interval"
               inputMode="numeric"
+              defaultValue="5"
               style={{
                 position: "absolute",
                 backgroundColor: "rgba(255, 255, 255, 0.3)",
