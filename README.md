@@ -1,4 +1,4 @@
-# Transight Traffic Counter (Beta)#
+# Transight Traffic Counter (Beta)
 ## Designed by Brendan Bessman
 ### A mobile Expo react-native app that records car movements in an intersection to replace analog clickers and tally sheets
 > [!NOTE] 

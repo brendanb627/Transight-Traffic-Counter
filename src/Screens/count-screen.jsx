@@ -407,13 +407,16 @@ const CountScreen = () => {
         westBoundInit={westBound}
         highestTime={highestTime}
       />
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
+      <TouchableOpacity onPress={() => setModalVisible(true)} style={{
+        width: 0,
+      }}>
         <Text
           style={{
+            width: 50,
             color: "#2282ff",
             fontSize: 20,
             fontWeight: 400,
-            left: -110,
+            left: -140,
             top: -15,
           }}
         >

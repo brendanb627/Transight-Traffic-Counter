@@ -30,7 +30,7 @@ export const FormatModal = ({
   const [northSouth, setNorthSouth] = useState("unnamed_northSouth");
   const [eastWest, setEastWest] = useState("unnamed_eastWest");
   const [weather, setWeather] = useState("");
-  const [startHour, setStartHour] = useState(0);
+  const [startHour, setStartHour] = useState(16);
   const [interval, setInterval] = useState(5);
 
   const [position, setPosition] = useState(1);
@@ -38,19 +38,12 @@ export const FormatModal = ({
   const [southBound, setSouthBound] = useState({});
   const [eastBound, setEastBound] = useState({});
   const [westBound, setWestBound] = useState({});
-  const [trafficRow, setTrafficRow] = useState({
-    northRight: 0,
-    northLeft: 0,
-    northThrough: 0,
-  });
-
-  const [trafficStudyName, settrafficStudyName] = useState("unnamed-study");
 
   const handleInputChange = (setEvent) => (text) => {
     setEvent(text);
   };
 
-  const csvDownload = async () => {
+  const assignPosition = async () => {
     if (position == 1) {
       setNorthBound(northBoundInit);
       setEastBound(eastBoundInit);
@@ -72,7 +65,22 @@ export const FormatModal = ({
       setSouthBound(westBoundInit);
       setWestBound(northBoundInit);
     }
+  };
+
+  useEffect(() => {
+    assignPosition();
+  }, [northBoundInit, southBoundInit, eastBoundInit, westBoundInit]);
+
+  const formatDate = (date) => {
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}.${day}.${year}`;
+  };
+
+  const csvDownload = async () => {
     console.log(highestTime);
+    console.log(interval);
     const fixedInt = interval * 60000; // Calculate fixedInt once
     const binsNum = Math.ceil(highestTime / fixedInt);
     const bins = binsNum + 1;
@@ -91,11 +99,45 @@ export const FormatModal = ({
         northBikeRight: 0,
         northBikeLeft: 0,
         northPed: 0,
+
+        eastRight: 0,
+        eastLeft: 0,
+        eastThrough: 0,
+        eastHeavyThrough: 0,
+        eastHeavyRight: 0,
+        eastHeavyLeft: 0,
+        eastBikeThrough: 0,
+        eastBikeRight: 0,
+        eastBikeLeft: 0,
+        eastPed: 0,
+
+        southRight: 0,
+        southLeft: 0,
+        southThrough: 0,
+        southHeavyThrough: 0,
+        southHeavyRight: 0,
+        southHeavyLeft: 0,
+        southBikeThrough: 0,
+        southBikeRight: 0,
+        southBikeLeft: 0,
+        southPed: 0,
+
+        westRight: 0,
+        westLeft: 0,
+        westThrough: 0,
+        westHeavyThrough: 0,
+        westHeavyRight: 0,
+        westHeavyLeft: 0,
+        westBikeThrough: 0,
+        westBikeRight: 0,
+        westBikeLeft: 0,
+        westPed: 0,
       };
 
       const lowerBound = (i - 1) * fixedInt;
       const upperBound = i * fixedInt;
 
+      //North
       northBound.rightTime.forEach((num) => {
         if (num > lowerBound && num <= upperBound) {
           rowCount.northRight += 1;
@@ -116,37 +158,270 @@ export const FormatModal = ({
 
       northBound.heavyThroughTime.forEach((num) => {
         if (num > lowerBound && num <= upperBound) {
-            rowCount.northHeavyThrough += 1;
+          rowCount.northHeavyThrough += 1;
         }
-      })
+      });
       northBound.heavyLeftTime.forEach((num) => {
         if (num > lowerBound && num <= upperBound) {
-            rowCount.northHeavyLeft += 1;
+          rowCount.northHeavyLeft += 1;
         }
-      })
+      });
       northBound.heavyRightTime.forEach((num) => {
         if (num > lowerBound && num <= upperBound) {
-            rowCount.northHeavyRight += 1;
+          rowCount.northHeavyRight += 1;
         }
-      })
+      });
+
+      northBound.bikeThroughTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.northBikeThrough += 1;
+        }
+      });
+      northBound.bikeLeftTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.northBikeLeft += 1;
+        }
+      });
+      northBound.bikeRightTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.northBikeRight += 1;
+        }
+      });
+      northBound.pedTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.northPed += 1;
+        }
+      });
+      //East
+      eastBound.rightTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.eastRight += 1;
+        }
+      });
+
+      eastBound.leftTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.eastLeft += 1;
+        }
+      });
+
+      eastBound.throughTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.eastThrough += 1;
+        }
+      });
+
+      eastBound.heavyThroughTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.eastHeavyThrough += 1;
+        }
+      });
+      eastBound.heavyLeftTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.eastHeavyLeft += 1;
+        }
+      });
+      eastBound.heavyRightTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.eastHeavyRight += 1;
+        }
+      });
+
+      eastBound.bikeThroughTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.eastBikeThrough += 1;
+        }
+      });
+      eastBound.bikeLeftTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.eastBikeLeft += 1;
+        }
+      });
+      eastBound.bikeRightTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.eastBikeRight += 1;
+        }
+      });
+      eastBound.pedTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.eastPed += 1;
+        }
+      });
+
+      //South
+      southBound.rightTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.southRight += 1;
+        }
+      });
+
+      southBound.leftTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.southLeft += 1;
+        }
+      });
+
+      southBound.throughTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.southThrough += 1;
+        }
+      });
+
+      southBound.heavyThroughTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.southHeavyThrough += 1;
+        }
+      });
+      southBound.heavyLeftTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.southHeavyLeft += 1;
+        }
+      });
+      southBound.heavyRightTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.southHeavyRight += 1;
+        }
+      });
+
+      southBound.bikeThroughTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.southBikeThrough += 1;
+        }
+      });
+      southBound.bikeLeftTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.southBikeLeft += 1;
+        }
+      });
+      southBound.bikeRightTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.southBikeRight += 1;
+        }
+      });
+      southBound.pedTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.southPed += 1;
+        }
+      });
+
+      //West
+      westBound.rightTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.westRight += 1;
+        }
+      });
+
+      westBound.leftTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.westLeft += 1;
+        }
+      });
+
+      westBound.throughTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.westThrough += 1;
+        }
+      });
+
+      westBound.heavyThroughTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.westHeavyThrough += 1;
+        }
+      });
+      westBound.heavyLeftTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.westHeavyLeft += 1;
+        }
+      });
+      westBound.heavyRightTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.westHeavyRight += 1;
+        }
+      });
+
+      westBound.bikeThroughTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.westBikeThrough += 1;
+        }
+      });
+      westBound.bikeLeftTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.westBikeLeft += 1;
+        }
+      });
+      westBound.bikeRightTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.westBikeRight += 1;
+        }
+      });
+      westBound.pedTime.forEach((num) => {
+        if (num > lowerBound && num <= upperBound) {
+          rowCount.westPed += 1;
+        }
+      });
+
+
       data.push({
-        period: lowerBound,
+        period: `${startHour}${(interval * (i - 1)).toString().padStart(2, 0)}`,
+
         northThrough: rowCount.northThrough,
         northLeft: rowCount.northLeft,
         northRight: rowCount.northRight,
+        northBikeThrough: rowCount.northBikeThrough,
+        northBikeLeft: rowCount.northBikeLeft,
+        northBikeRight: rowCount.northBikeRight,
+        northHeavyThrough: rowCount.northHeavyThrough,
+        northHeavyLeft: rowCount.northHeavyLeft,
+        northHeavyRight: rowCount.northHeavyRight,
+        northPed: rowCount.northPed,
+
+        eastThrough: rowCount.eastThrough,
+        eastLeft: rowCount.eastLeft,
+        eastRight: rowCount.eastRight,
+        eastBikeThrough: rowCount.eastBikeThrough,
+        eastBikeLeft: rowCount.eastBikeLeft,
+        eastBikeRight: rowCount.eastBikeRight,
+        eastHeavyThrough: rowCount.eastHeavyThrough,
+        eastHeavyLeft: rowCount.eastHeavyLeft,
+        eastHeavyRight: rowCount.eastHeavyRight,
+        eastPed: rowCount.eastPed,
+
+        southThrough: rowCount.southThrough,
+        southLeft: rowCount.southLeft,
+        southRight: rowCount.southRight,
+        southBikeThrough: rowCount.southBikeThrough,
+        southBikeLeft: rowCount.southBikeLeft,
+        southBikeRight: rowCount.southBikeRight,
+        southHeavyThrough: rowCount.southHeavyThrough,
+        southHeavyLeft: rowCount.southHeavyLeft,
+        southHeavyRight: rowCount.southHeavyRight,
+        southPed: rowCount.southPed,
+
+        westThrough: rowCount.westThrough,
+        westLeft: rowCount.westLeft,
+        westRight: rowCount.westRight,
+        westBikeThrough: rowCount.westBikeThrough,
+        westBikeLeft: rowCount.westBikeLeft,
+        westBikeRight: rowCount.westBikeRight,
+        westHeavyThrough: rowCount.westHeavyThrough,
+        westHeavyLeft: rowCount.westHeavyLeft,
+        westHeavyRight: rowCount.westHeavyRight,
+        westPed: rowCount.westPed
       });
     }
 
-    const header1 = `Period,${northSouth}_North_Bound, , , , , , , , ,${eastWest}_East_Bound,${northSouth}_South_Bound,${eastWest}_West_Bound\n`;
-    const header2 = `Period,NBT,NBL,NBR,NBT_Bike,NBL_Bike,NBR_Bike,NBT_Heavy,NBL_Heavy,NBR_Heavy,SBT,SBL,SBR,SBT_Bike,SBL_Bike,SBR_Bike,SBT_Heavy,SBL_Heavy,SBR_Heavy,EBT,EBL,EBR,EBT_Bike,EBL_Bike,EBR_Bike,EBT_Heavy,EBL_Heavy,EBR_Heavy,WBT,WBL,WBR,WBT_Bike,WBL_Bike,WBR_Bike,WBT_Heavy,WBL_Heavy,WBR_Heavy\n`;
+    const header1 = `Period,${northSouth}_North_Bound, , , , , , , , , ,${eastWest}_East_Bound, , , , , , , , , ,${northSouth}_South_Bound, , , , , , , , , ,${eastWest}_West_Bound\n`;
+    const header2 = `Period,NBT,NBL,NBR,NBT_Bike,NBL_Bike,NBR_Bike,NBT_Heavy,NBL_Heavy,NBR_Heavy,N_Ped,SBT,SBL,SBR,SBT_Bike,SBL_Bike,SBR_Bike,SBT_Heavy,SBL_Heavy,SBR_Heavy,S_Ped,EBT,EBL,EBR,EBT_Bike,EBL_Bike,EBR_Bike,EBT_Heavy,EBL_Heavy,EBR_Heavy,E_Ped,WBT,WBL,WBR,WBT_Bike,WBL_Bike,WBR_Bike,WBT_Heavy,WBL_Heavy,WBR_Heavy,W_Ped\n`;
 
-      const csvRows = data.map((row) => {
-      return `${row.period},${row.northThrough},${row.northLeft},${row.northRight},${row.northBikeThrough},${row.northBikeLeft},${row.northBikeRight},${row.northHeavyThrough},${row.northHeavyLeft},${row.northHeavyRight},${row.southThrough},${row.southLleft},${row.southRight},${row.southBikeThrough},${row.southBikeLeft},${row.southBikeRight},${row.southHeavyThrough},${row.southHeavyLeft},${row.southHeavyRight},${row.eastThrough},${row.eastLleft},${row.eastRight},${row.eastBikeThrough},${row.eastBikeLeft},${row.eastBikeRight},${row.eastHeavyThrough},${row.eastHeavyLeft},${row.eastHeavyRight},${row.westThrough},${row.westLleft},${row.westRight},${row.westBikeThrough},${row.westBikeLeft},${row.westBikeRight},${row.westHeavyThrough},${row.westHeavyLeft},${row.westHeavyRight}`;
+    const csvRows = data.map((row) => {
+      return `${row.period || 0},${row.northThrough || 0},${row.northLeft || 0},${row.northRight || 0},${row.northBikeThrough || 0},${row.northBikeLeft || 0},${row.northBikeRight || 0},${row.northHeavyThrough || 0},${row.northHeavyLeft || 0},${row.northHeavyRight || 0},${row.northPed || 0},${row.southThrough || 0},${row.southLeft || 0},${row.southRight || 0},${row.southBikeThrough || 0},${row.southBikeLeft || 0},${row.southBikeRight || 0},${row.southHeavyThrough || 0},${row.southHeavyLeft || 0},${row.southHeavyRight || 0},${row.southPed || 0},${row.eastThrough || 0},${row.eastLeft || 0},${row.eastRight || 0},${row.eastBikeThrough || 0},${row.eastBikeLeft || 0},${row.eastBikeRight || 0},${row.eastHeavyThrough || 0},${row.eastHeavyLeft || 0},${row.eastHeavyRight || 0},${row.eastPed || 0},${row.westThrough || 0},${row.westLeft || 0},${row.westRight || 0},${row.westBikeThrough || 0},${row.westBikeLeft || 0},${row.westBikeRight || 0},${row.westHeavyThrough || 0},${row.westHeavyLeft || 0},${row.westHeavyRight || 0},${row.westPed || 0}`;
     });
 
     const csvString = header1 + header2 + csvRows.join("\n");
 
-    const fileUri = FileSystem.documentDirectory + `${trafficStudyName}.csv`;
+    const currentDate = (formatDate(new Date()))
+
+    const fileUri = FileSystem.documentDirectory + `${northSouth}-${eastWest}-${currentDate}-${weather || ``}-${startHour}.csv`;
 
     try {
       await FileSystem.writeAsStringAsync(fileUri, csvString, {
@@ -158,7 +433,7 @@ export const FormatModal = ({
       await Sharing.shareAsync(fileUri);
     } catch (error) {
       console.error("Error writing file:", error);
-      Alert.alert("Error", "Could not create the CSV file. Please try again.");
+      Alert.alert("Error", "Could not create the CSV file. Do not include '/' in your names. Please try again.");
     }
   };
 
@@ -210,7 +485,7 @@ export const FormatModal = ({
             />
             <TextInput
               placeholder="Start Hour"
-              defaultValue="4"
+              defaultValue={startHour}
               inputMode="numeric"
               style={{
                 position: "absolute",
@@ -228,6 +503,22 @@ export const FormatModal = ({
               }}
               onChangeText={handleInputChange(setStartHour)}
             />
+            <Text style={{
+              position: "absolute",
+              fontSize: 20,
+              top: 320,
+              left: 100,
+               }}>
+              Interval (min):
+            </Text>
+            <Text style={{
+              position: "absolute",
+              fontSize: 20,
+              top: 250,
+              left: 100,
+               }}>
+              Start Hour (24H):
+            </Text>
             <TextInput
               placeholder="Interval"
               inputMode="numeric"

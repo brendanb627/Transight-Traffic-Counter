@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Transight-Traffic-Counter",
-    "slug": "Transight-Traffic-Counter",
+    "name": "Transight Traffic Counter",
+    "slug": "TransightTrafficCounter",
     "version": "1.0.0",
     "orientation": "landscape",
     "icon": "./src/assets/icon.png",
@@ -12,16 +12,22 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.brendanb627.TransightTrafficCounter"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/icon.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e56710be-5df9-4725-b45a-ccb7d10c2f0b"
+      }
     }
   }
 }

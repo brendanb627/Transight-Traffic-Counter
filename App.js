@@ -2,9 +2,9 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen } from './Screens/home-screen';
-import CountScreen from './Screens/count-screen';
-import { FormatModal } from './Components/format-modal';
+import { HomeScreen } from './src/Screens/home-screen';
+import CountScreen from './src/Screens/count-screen';
+import { FormatModal } from './src/Components/format-modal';
 
 const Stack = createNativeStackNavigator();
 export default function App() {

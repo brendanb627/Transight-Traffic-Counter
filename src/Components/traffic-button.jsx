@@ -108,17 +108,26 @@ export const TrafficButton = ({
         if (ButtonType == "through") {
           setTraffic({
             ...traffic,
+            through: traffic.through + 1,
+            throughTime: [...traffic.throughTime, Date.now() - startDate],  
             heavyThrough: traffic.heavyThrough + 1,
+            heavyThroughTime: [...traffic.heavyThroughTime, Date.now() - startDate], 
           });
         } else if (ButtonType == "left") {
           setTraffic({
             ...traffic,
+            left: traffic.left + 1,
+            leftTime: [...traffic.leftTime, Date.now() - startDate],
             heavyLeft: traffic.heavyLeft + 1,
+            heavyLeftTime: [...traffic.heavyLeftTime, Date.now() - startDate],
           });
         } else if (ButtonType == "right") {
           setTraffic({
             ...traffic,
+            right: traffic.right + 1,
+            rightTime: [...traffic.rightTime, Date.now() - startDate],
             heavyRight: traffic.heavyRight + 1,
+            heavyRightTime: [...traffic.heavyRightTime, Date.now() - startDate],
           });
         } else {
           console.log("error with input on traffic button, check spelling");
@@ -128,16 +137,19 @@ export const TrafficButton = ({
           setTraffic({
             ...traffic,
             bikeThrough: traffic.bikeThrough + 1,
+            bikeThroughTime: [...traffic.bikeThroughTime, Date.now() - startDate],
           });
         } else if (ButtonType == "left") {
           setTraffic({
             ...traffic,
             bikeLeft: traffic.bikeLeft + 1,
+            bikeLeftTime: [...traffic.bikeLeftTime, Date.now() - startDate],
           });
         } else if (ButtonType == "right") {
           setTraffic({
             ...traffic,
             bikeRight: traffic.bikeRight + 1,
+            bikeRightTime: [...traffic.bikeRightTime, Date.now() - startDate],
           });
         } else {
           console.log("error with input on traffic button, check spelling");
