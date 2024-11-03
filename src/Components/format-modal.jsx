@@ -9,6 +9,8 @@ import {
   TextInput,
   Alert,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import * as Sharing from "expo-sharing";
 import * as ScreenOrientation from "expo-screen-orientation";
@@ -440,6 +442,7 @@ export const FormatModal = ({
   return (
     <>
       {open && (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <BlurView
           intensity={100}
           style={{
@@ -565,6 +568,7 @@ export const FormatModal = ({
             />
           </View>
         </BlurView>
+        </TouchableWithoutFeedback>
       )}
     </>
   );

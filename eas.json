@@ -16,6 +16,12 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "bdbessman@gmail.com",
+        "ascAppId": "6737729978",
+        "appleTeamId": "QP53WVYTQ8"
+      }
+    }
   }
 }
