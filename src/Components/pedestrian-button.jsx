@@ -30,7 +30,6 @@ export const PedestrianButton = ({
       ped: (traffic.ped += 1),
       pedTime: [...traffic.pedTime, Date.now() - startDate],
     });
-    console.log(traffic.pedTime)
     setHighestTime(Date.now() - startDate);
   };
 

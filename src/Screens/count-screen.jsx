@@ -405,8 +405,8 @@ const CountScreen = () => {
       <PedestrianButton
         startDate={startDate}
         setHighestTime={setHighestTime}
-        setTraffic={setNorthBound}
-        traffic={northBound}
+        setTraffic={setWestBound}
+        traffic={westBound}
         location={[-25, -25, 0, '42%', '20%']}
       />
       <PedestrianButton
@@ -426,8 +426,8 @@ const CountScreen = () => {
       <PedestrianButton
         startDate={startDate}
         setHighestTime={setHighestTime}
-        setTraffic={setWestBound}
-        traffic={westBound}
+        setTraffic={setNorthBound}
+        traffic={northBound}
         location={[-25, -25, 0, '28%', '44.8%']}
       />
       <FormatModal

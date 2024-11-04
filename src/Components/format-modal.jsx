@@ -81,8 +81,6 @@ export const FormatModal = ({
   };
 
   const csvDownload = async () => {
-    console.log(highestTime);
-    console.log(interval);
     const fixedInt = interval * 60000; // Calculate fixedInt once
     const binsNum = Math.ceil(highestTime / fixedInt);
     const bins = binsNum + 1;
@@ -364,7 +362,7 @@ export const FormatModal = ({
 
 
       data.push({
-        period: `${startHour}${(interval * (i - 1)).toString().padStart(2, 0)}`,
+        period: `${(parseInt(startHour) + Math.floor((interval * (i - 1)) / 60)).toString().padStart(1, 0)}${(interval * (i - 1) % 60).toString().padStart(2, 0)}`,
 
         northThrough: rowCount.northThrough,
         northLeft: rowCount.northLeft,
@@ -430,11 +428,8 @@ export const FormatModal = ({
         encoding: FileSystem.EncodingType.UTF8,
       });
 
-      console.log("CSV file created at: ", fileUri);
-
       await Sharing.shareAsync(fileUri);
     } catch (error) {
-      console.error("Error writing file:", error);
       Alert.alert("Error", "Could not create the CSV file. Do not include '/' in your names. Please try again.");
     }
   };
