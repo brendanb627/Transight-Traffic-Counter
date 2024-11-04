@@ -24,14 +24,21 @@ export const TrafficButton = ({
   countStarted,
   setCountStarted,
   setHighestTime,
-  startDate
+  startDate,
 }) => {
   const [buttonDistance, setButtonDistance] = useState(0);
   const [buttonPressing, setButtonPressing] = useState(false);
   const [trafficType, setTrafficType] = useState("normal");
   const [buttonPressed, setButtonPressed] = useState(false);
+  const [isCooldown, setIsCooldown] = useState(false);
 
   const buttonRelease = () => {
+    if (isCooldown) return;
+
+    setIsCooldown(true);
+    setTimeout(() => {
+      setIsCooldown(false);
+    }, 100);
     Haptic.impactAsync(Haptic.ImpactFeedbackStyle.Medium);
     setButtonPressing(false);
     handlePress();
@@ -69,100 +76,96 @@ export const TrafficButton = ({
     setButtonPressing(true);
     setButtonDistance(locationX);
   };
-  var tempCount = 0
+  var tempCount = 0;
+
   const handlePress = () => {
-    console.log(`Button pressed!${tempCount += 1}`)
-    if (countStarted == false) {
-      setCountStarted(true);
-    }
-    if (!buttonPressed) {
-      setButtonPressed(true);
-      if (trafficType == "normal") {
-        if (ButtonType == "through") {
-          setTraffic({
-            ...traffic,
-            through: traffic.through + 1,
-            throughTime: [...traffic.throughTime, Date.now() - startDate], 
-          });
-          setHighestTime(Date.now() - startDate);
-
-        } else if (ButtonType == "left") {
-          setTraffic({
-            ...traffic,
-            left: traffic.left + 1,
-            leftTime: [...traffic.leftTime, Date.now() - startDate], 
-          });
-          setHighestTime(Date.now() - startDate);
-
-        } else if (ButtonType == "right") {
-          setTraffic({
-            ...traffic,
-            right: traffic.right + 1,
-            rightTime: [...traffic.rightTime, Date.now() - startDate], 
-          });
-          setHighestTime(Date.now() - startDate);
-        } else {
-          console.log("error with input on traffic button, check spelling");
-        }
-      } else if (trafficType == "heavy") {
-        if (ButtonType == "through") {
-          setTraffic({
-            ...traffic,
-            through: traffic.through + 1,
-            throughTime: [...traffic.throughTime, Date.now() - startDate],  
-            heavyThrough: traffic.heavyThrough + 1,
-            heavyThroughTime: [...traffic.heavyThroughTime, Date.now() - startDate], 
-          });
-        } else if (ButtonType == "left") {
-          setTraffic({
-            ...traffic,
-            left: traffic.left + 1,
-            leftTime: [...traffic.leftTime, Date.now() - startDate],
-            heavyLeft: traffic.heavyLeft + 1,
-            heavyLeftTime: [...traffic.heavyLeftTime, Date.now() - startDate],
-          });
-        } else if (ButtonType == "right") {
-          setTraffic({
-            ...traffic,
-            right: traffic.right + 1,
-            rightTime: [...traffic.rightTime, Date.now() - startDate],
-            heavyRight: traffic.heavyRight + 1,
-            heavyRightTime: [...traffic.heavyRightTime, Date.now() - startDate],
-          });
-        } else {
-          console.log("error with input on traffic button, check spelling");
-        }
-      } else if (trafficType == "bike") {
-        if (ButtonType == "through") {
-          setTraffic({
-            ...traffic,
-            bikeThrough: traffic.bikeThrough + 1,
-            bikeThroughTime: [...traffic.bikeThroughTime, Date.now() - startDate],
-          });
-        } else if (ButtonType == "left") {
-          setTraffic({
-            ...traffic,
-            bikeLeft: traffic.bikeLeft + 1,
-            bikeLeftTime: [...traffic.bikeLeftTime, Date.now() - startDate],
-          });
-        } else if (ButtonType == "right") {
-          setTraffic({
-            ...traffic,
-            bikeRight: traffic.bikeRight + 1,
-            bikeRightTime: [...traffic.bikeRightTime, Date.now() - startDate],
-          });
-        } else {
-          console.log("error with input on traffic button, check spelling");
-        }
+    if (trafficType == "normal") {
+      if (ButtonType == "through") {
+        setTraffic({
+          ...traffic,
+          through: traffic.through + 1,
+          throughTime: [...traffic.throughTime, Date.now() - startDate],
+        });
+        setHighestTime(Date.now() - startDate);
+      } else if (ButtonType == "left") {
+        setTraffic({
+          ...traffic,
+          left: traffic.left + 1,
+          leftTime: [...traffic.leftTime, Date.now() - startDate],
+        });
+        setHighestTime(Date.now() - startDate);
+      } else if (ButtonType == "right") {
+        setTraffic({
+          ...traffic,
+          right: traffic.right + 1,
+          rightTime: [...traffic.rightTime, Date.now() - startDate],
+        });
+        setHighestTime(Date.now() - startDate);
       } else {
-        console.log("issue with traffic type. check spelling");
+        console.log("error with input on traffic button, check spelling");
       }
-      setTrafficType("normal");
+    } else if (trafficType == "heavy") {
+      if (ButtonType == "through") {
+        setTraffic({
+          ...traffic,
+          through: traffic.through + 1,
+          throughTime: [...traffic.throughTime, Date.now() - startDate],
+          heavyThrough: traffic.heavyThrough + 1,
+          heavyThroughTime: [
+            ...traffic.heavyThroughTime,
+            Date.now() - startDate,
+          ],
+        });
+      } else if (ButtonType == "left") {
+        setTraffic({
+          ...traffic,
+          left: traffic.left + 1,
+          leftTime: [...traffic.leftTime, Date.now() - startDate],
+          heavyLeft: traffic.heavyLeft + 1,
+          heavyLeftTime: [...traffic.heavyLeftTime, Date.now() - startDate],
+        });
+      } else if (ButtonType == "right") {
+        setTraffic({
+          ...traffic,
+          right: traffic.right + 1,
+          rightTime: [...traffic.rightTime, Date.now() - startDate],
+          heavyRight: traffic.heavyRight + 1,
+          heavyRightTime: [...traffic.heavyRightTime, Date.now() - startDate],
+        });
+      } else {
+        console.log("error with input on traffic button, check spelling");
+      }
+    } else if (trafficType == "bike") {
+      if (ButtonType == "through") {
+        setTraffic({
+          ...traffic,
+          bikeThrough: traffic.bikeThrough + 1,
+          bikeThroughTime: [...traffic.bikeThroughTime, Date.now() - startDate],
+        });
+      } else if (ButtonType == "left") {
+        setTraffic({
+          ...traffic,
+          bikeLeft: traffic.bikeLeft + 1,
+          bikeLeftTime: [...traffic.bikeLeftTime, Date.now() - startDate],
+        });
+      } else if (ButtonType == "right") {
+        setTraffic({
+          ...traffic,
+          bikeRight: traffic.bikeRight + 1,
+          bikeRightTime: [...traffic.bikeRightTime, Date.now() - startDate],
+        });
+      } else {
+        console.log("error with input on traffic button, check spelling");
+      }
+    } else {
+      console.log("issue with traffic type. check spelling");
     }
+    setTrafficType("normal");
   };
 
   return (
-    <GestureHandlerRootView style={{ position: "absolute" }}>
+    <GestureHandlerRootView style={{ position: "absolute", top: location[3],
+      left: location[4], }}>
       <View
         style={{
           position: "absolute",
@@ -172,8 +175,6 @@ export const TrafficButton = ({
           <TouchableOpacity
             style={{
               position: "absolute",
-              top: location[3],
-              left: location[4],
               width: 75,
               height: 75,
               justifyContent: "center",
@@ -201,8 +202,8 @@ export const TrafficButton = ({
               style={{
                 width: 60,
                 height: 60,
-                top: location[3] + location[0],
-                left: location[4] + location[1],
+                top: 3,
+                left: 8,
                 position: "absolute",
               }}
               resizeMode="contain"
@@ -216,8 +217,8 @@ export const TrafficButton = ({
               style={{
                 width: 60,
                 height: 60,
-                top: location[3] + location[0],
-                left: location[4] + location[1],
+                top: 3,
+                left: 8,
                 position: "absolute",
                 pointerEvents: "none",
                 transform: [{ rotate: `${location[2]}deg` }],
@@ -232,8 +233,8 @@ export const TrafficButton = ({
             style={{
               width: 60,
               height: 60,
-              top: location[3] + location[0],
-              left: location[4] + location[1],
+              top: 3,
+              left: 8,
               position: "absolute",
             }}
             resizeMode="contain"

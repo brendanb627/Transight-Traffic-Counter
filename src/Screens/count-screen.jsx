@@ -226,10 +226,40 @@ const CountScreen = () => {
   };
   const [position, setPosition] = useState(0);
   const [trafficStudyName, settrafficStudyName] = useState("unnamed-study");
+  const [currentTimeRel, setCurrentTimeRel] = useState("0:00:00");
 
   const csvDownload = async () => {
     setModalVisible(true);
   };
+
+  const formatElapsedTime = (startTime) => {
+    const elapsedTime = Date.now() - startTime;
+    const totalSeconds = Math.floor(elapsedTime / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
+
+  const formatCurrentTime = () => {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = now.getMinutes();
+    if (hours > 12) {
+      hours = hours - 12;
+    }
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`
+  }
+
+  useEffect(() => {
+    let timer;
+    if (!countStarted) {
+      timer = setInterval(() => {
+        setCurrentTimeRel(formatElapsedTime(startDate)); // Update the formatted time
+      }, 1000); // Update every second
+    }
+    return () => clearInterval(timer); // Cleanup timer on unmount
+  }, [countStarted, startDate]);
 
   useEffect(() => {
     const lockOrientation = async () => {
@@ -237,6 +267,8 @@ const CountScreen = () => {
         ScreenOrientation.OrientationLock.LANDSCAPE
       );
     };
+
+    
     lockOrientation();
 
     return () => {
@@ -255,7 +287,7 @@ const CountScreen = () => {
         ButtonType={"through"}
         setTraffic={setSouthBound}
         traffic={southBound}
-        location={[5, 8, 90, -196, -50]}
+        location={[5, 8, 90, '1%', '44.4%']}
       />
       <TrafficButton
         startDate={startDate}
@@ -265,7 +297,7 @@ const CountScreen = () => {
         ButtonType={"left"}
         setTraffic={setSouthBound}
         traffic={southBound}
-        location={[5, 8, 0, -196, 100]}
+        location={[5, 8, 0, '1%', '60.4%']}
       />
       <TrafficButton
         startDate={startDate}
@@ -275,7 +307,7 @@ const CountScreen = () => {
         ButtonType={"right"}
         setTraffic={setSouthBound}
         traffic={southBound}
-        location={[5, 8, 180, -196, -200]}
+        location={[5, 8, 180, '1%', '28.4%']}
       />
 
       <TrafficButton
@@ -286,7 +318,7 @@ const CountScreen = () => {
         ButtonType={"through"}
         setTraffic={setNorthBound}
         traffic={northBound}
-        location={[5, 8, -90, 80, -50]}
+        location={[5, 8, -90, '77%', '44.4%']}
       />
       <TrafficButton
         startDate={startDate}
@@ -296,7 +328,7 @@ const CountScreen = () => {
         ButtonType={"right"}
         setTraffic={setNorthBound}
         traffic={northBound}
-        location={[5, 8, 0, 80, 100]}
+        location={[5, 8, 0, '77%','60.4%']}
       />
       <TrafficButton
         startDate={startDate}
@@ -306,7 +338,7 @@ const CountScreen = () => {
         ButtonType={"left"}
         setTraffic={setNorthBound}
         traffic={northBound}
-        location={[5, 8, 180, 80, -200]}
+        location={[5, 8, 180, '77%', '28.4%']}
       />
 
       <TrafficButton
@@ -317,7 +349,7 @@ const CountScreen = () => {
         ButtonType={"through"}
         setTraffic={setWestBound}
         traffic={westBound}
-        location={[5, 8, 0, -50, -375]}
+        location={[5, 8, 180, '40%', '85%']}
       />
       <TrafficButton
         startDate={startDate}
@@ -327,7 +359,7 @@ const CountScreen = () => {
         ButtonType={"right"}
         setTraffic={setWestBound}
         traffic={westBound}
-        location={[5, 8, 90, 70, -375]}
+        location={[5, 8, -90, '9%', '85%']}
       />
       <TrafficButton
         startDate={startDate}
@@ -337,7 +369,7 @@ const CountScreen = () => {
         ButtonType={"left"}
         setTraffic={setWestBound}
         traffic={westBound}
-        location={[5, 8, -90, -170, -375]}
+        location={[5, 8, 90, '72%', '85%']}
       />
 
       <TrafficButton
@@ -348,7 +380,7 @@ const CountScreen = () => {
         ButtonType={"through"}
         setTraffic={setEastBound}
         traffic={eastBound}
-        location={[5, 8, -180, -50, 280]}
+        location={[5, 8, 0, '40%', '7%']}
       />
       <TrafficButton
         startDate={startDate}
@@ -358,7 +390,7 @@ const CountScreen = () => {
         ButtonType={"right"}
         setTraffic={setEastBound}
         traffic={eastBound}
-        location={[5, 8, 90, 70, 280]}
+        location={[5, 8, 90, '72%', '7%']}
       />
       <TrafficButton
         startDate={startDate}
@@ -368,35 +400,35 @@ const CountScreen = () => {
         ButtonType={"left"}
         setTraffic={setEastBound}
         traffic={eastBound}
-        location={[5, 8, -90, -170, 280]}
+        location={[5, 8, -90, '9%', '7%']}
       />
       <PedestrianButton
         startDate={startDate}
         setHighestTime={setHighestTime}
         setTraffic={setNorthBound}
         traffic={northBound}
-        location={[-25, -25, 0, 150, 170]}
+        location={[-25, -25, 0, '42%', '20%']}
       />
       <PedestrianButton
         startDate={startDate}
         setHighestTime={setHighestTime}
         setTraffic={setEastBound}
         traffic={eastBound}
-        location={[-25, -25, 0, 150, 595]}
+        location={[-25, -25, 0, '42%', '71%']}
       />
       <PedestrianButton
         startDate={startDate}
         setHighestTime={setHighestTime}
         setTraffic={setSouthBound}
         traffic={southBound}
-        location={[-23, -20, 0, 190, 380]}
+        location={[-23, -20, 0, '52%', '44.8%']}
       />
       <PedestrianButton
         startDate={startDate}
         setHighestTime={setHighestTime}
         setTraffic={setWestBound}
         traffic={westBound}
-        location={[-25, -25, 0, 100, 380]}
+        location={[-25, -25, 0, '28%', '44.8%']}
       />
       <FormatModal
         open={modalVisible}
@@ -437,6 +469,32 @@ const CountScreen = () => {
           New Count
         </Text>
       </TouchableOpacity>
+      <Text
+          style={{
+            position: 'absolute',
+            width: 80,
+            color: "#888888",
+            fontSize: 20,
+            fontWeight: 400,
+            left: 280,
+            top: 120,
+          }}
+        >
+          {currentTimeRel}
+        </Text>
+        <Text
+          style={{
+            position: 'absolute',
+            width: 80,
+            color: "#888888",
+            fontSize: 20,
+            fontWeight: 400,
+            left: 480,
+            top: 120,
+          }}
+        >
+          {formatCurrentTime()}
+        </Text>
     </View>
   );
 };

@@ -412,7 +412,7 @@ export const FormatModal = ({
       });
     }
 
-    const header1 = `Period,${northSouth}_North_Bound, , , , , , , , , ,${eastWest}_East_Bound, , , , , , , , , ,${northSouth}_South_Bound, , , , , , , , , ,${eastWest}_West_Bound\n`;
+    const header1 = `Period,${northSouth}_North_Bound, , , , , , , , , ,${northSouth}_South_Bound, , , , , , , , , ,${eastWest}_East_Bound, , , , , , , , , ,${eastWest}_West_Bound\n`;
     const header2 = `Period,NBT,NBL,NBR,NBT_Bike,NBL_Bike,NBR_Bike,NBT_Heavy,NBL_Heavy,NBR_Heavy,N_Ped,SBT,SBL,SBR,SBT_Bike,SBL_Bike,SBR_Bike,SBT_Heavy,SBL_Heavy,SBR_Heavy,S_Ped,EBT,EBL,EBR,EBT_Bike,EBL_Bike,EBR_Bike,EBT_Heavy,EBL_Heavy,EBR_Heavy,E_Ped,WBT,WBL,WBR,WBT_Bike,WBL_Bike,WBR_Bike,WBT_Heavy,WBL_Heavy,WBR_Heavy,W_Ped\n`;
 
     const csvRows = data.map((row) => {
