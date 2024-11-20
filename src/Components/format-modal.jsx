@@ -82,6 +82,11 @@ export const FormatModal = ({
     const binsNum = Math.ceil(highestTime / fixedInt);
     const bins = binsNum + 1;
 
+    if (bins > 12000) {
+      alert("You are trying to generate a count with over 12,000 rows. This is probably a stale count and can not be processed");
+      return;
+    }
+
     const data = []; // Initialize the data array to store results
 
     for (let i = 1; i < bins; i++) {

@@ -212,7 +212,8 @@ export const TrafficButton = ({
         )}
         {!buttonPressing && (
           <View>
-            <Image
+            {ButtonType == 'through' && (
+              <Image
               source={require("../assets/arrowIcon.png")}
               style={{
                 width: 60,
@@ -225,6 +226,38 @@ export const TrafficButton = ({
               }}
               resizeMode="contain"
             />
+            )}
+            {ButtonType == 'right' && (
+              <Image
+              source={require("../assets/newRightArrow.png")}
+              style={{
+                width: 50,
+                height: 50,
+                top: 6,
+                left: 15,
+                position: "absolute",
+                pointerEvents: "none",
+                transform: [{ rotate: `${location[2]}deg` }],
+              }}
+              resizeMode="contain"
+            />
+            )}
+            {ButtonType == 'left' && (
+              <Image
+              source={require("../assets/newLeftArrow.png")}
+              style={{
+                width: 50,
+                height: 50,
+                top: 6,
+                left: 15,
+                position: "absolute",
+                pointerEvents: "none",
+                transform: [{ rotate: `${location[2] + 180}deg` }],
+              }}
+              resizeMode="contain"
+            />
+            )}
+            
           </View>
         )}
         {buttonPressing && buttonDistance > 50 && buttonDistance <= 100 && (
