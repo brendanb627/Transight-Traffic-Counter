@@ -69,10 +69,6 @@ export const FormatModal = ({
     }
   };
 
-  useEffect(() => {
-    assignPosition();
-  }, [northBoundInit, southBoundInit, eastBoundInit, westBoundInit]);
-
   const formatDate = (date) => {
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
     const day = String(date.getDate()).padStart(2, '0');
@@ -81,6 +77,7 @@ export const FormatModal = ({
   };
 
   const csvDownload = async () => {
+    await assignPosition();
     const fixedInt = interval * 60000; // Calculate fixedInt once
     const binsNum = Math.ceil(highestTime / fixedInt);
     const bins = binsNum + 1;
