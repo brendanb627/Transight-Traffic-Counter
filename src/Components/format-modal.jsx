@@ -40,10 +40,21 @@ export const FormatModal = ({
   const [southBound, setSouthBound] = useState({});
   const [eastBound, setEastBound] = useState({});
   const [westBound, setWestBound] = useState({});
+  const [city, setCity] = useState('Bend');
+  const [state, setState] = useState('OR')
+
+  useEffect(() => {
+    assignPosition();
+  }, [position, northBoundInit, southBoundInit, eastBoundInit, westBoundInit]);
 
   const handleInputChange = (setEvent) => (text) => {
     setEvent(text);
   };
+
+  useEffect(() => {
+    console.log(city)
+  }, [city])
+  
 
   const assignPosition = async () => {
     if (position == 1) {
@@ -70,20 +81,24 @@ export const FormatModal = ({
   };
 
   const formatDate = (date) => {
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, "0");
     const year = date.getFullYear();
     return `${month}.${day}.${year}`;
   };
 
+  const currentDate = formatDate(new Date());
+
   const csvDownload = async () => {
-    await assignPosition();
+    console.log('aad')
     const fixedInt = interval * 60000; // Calculate fixedInt once
     const binsNum = Math.ceil(highestTime / fixedInt);
     const bins = binsNum + 1;
 
     if (bins > 12000) {
-      alert("You are trying to generate a count with over 12,000 rows. This is probably a stale count and can not be processed");
+      alert(
+        "You are trying to generate a count with over 12,000 rows. This is probably a stale count and can not be processed"
+      );
       return;
     }
 
@@ -362,9 +377,12 @@ export const FormatModal = ({
         }
       });
 
-
       data.push({
-        period: `${(parseInt(startHour) + Math.floor((interval * (i - 1)) / 60)).toString().padStart(1, 0)}${(interval * (i - 1) % 60).toString().padStart(2, 0)}`,
+        period: `${(parseInt(startHour) + Math.floor((interval * (i - 1)) / 60))
+          .toString()
+          .padStart(1, 0)}${((interval * (i - 1)) % 60)
+          .toString()
+          .padStart(2, 0)}`,
 
         northThrough: rowCount.northThrough,
         northLeft: rowCount.northLeft,
@@ -408,22 +426,72 @@ export const FormatModal = ({
         westHeavyThrough: rowCount.westHeavyThrough,
         westHeavyLeft: rowCount.westHeavyLeft,
         westHeavyRight: rowCount.westHeavyRight,
-        westPed: rowCount.westPed
+        westPed: rowCount.westPed,
       });
     }
-
-    const header1 = `Period,${northSouth}_North_Bound, , , , , , , , , ,${northSouth}_South_Bound, , , , , , , , , ,${eastWest}_East_Bound, , , , , , , , , ,${eastWest}_West_Bound\n`;
-    const header2 = `Period,NBT,NBL,NBR,NBT_Bike,NBL_Bike,NBR_Bike,NBT_Heavy,NBL_Heavy,NBR_Heavy,N_Ped,SBT,SBL,SBR,SBT_Bike,SBL_Bike,SBR_Bike,SBT_Heavy,SBL_Heavy,SBR_Heavy,S_Ped,EBT,EBL,EBR,EBT_Bike,EBL_Bike,EBR_Bike,EBT_Heavy,EBL_Heavy,EBR_Heavy,E_Ped,WBT,WBL,WBR,WBT_Bike,WBL_Bike,WBR_Bike,WBT_Heavy,WBL_Heavy,WBR_Heavy,W_Ped\n`;
-
+    const date = new Date();
+    const weekday = date.getDay();
+    const setupHeader1 = `Transight Consulting\n`;
+    const setupHeader2 = `${northSouth || null}\n`;
+    const setupHeader3 = `${eastWest || null}\n`;
+    const setupHeader4 = `${city || 'city'}\n`;
+    const setupHeader5 = `${state || 'state'}\n`;
+    const setupHeader6 = `${currentDate || 'currentDate issue'}\n`;
+    const setupHeader7 = `${weather || null}\n`;
+    const header1 = `Period,${northSouth} Northbound, , , , , , , , , ,${northSouth} Southbound, , , , , , , , , ,${eastWest} Eastbound, , , , , , , , , ,${eastWest} Westbound\n`;
+    const header2 = `Period,NBL,NBT,NBR,NBL_Bike,NBT_Bike,NBR_Bike,NBL_Heavy,NBT_Heavy,NBR_Heavy,N_Ped,SBL,SBT,SBR,SBL_Bike,SBT_Bike,SBR_Bike,SBL_Heavy,SBT_Heavy,SBR_Heavy,S_Ped,EBL,EBT,EBR,EBL_Bike,EBT_Bike,EBR_Bike,EBL_Heavy,EBT_Heavy,EBR_Heavy,E_Ped,WBL,WBT,WBR,WBL_Bike,WBT_Bike,WBR_Bike,WBL_Heavy,WBT_Heavy,WBR_Heavy,W_Ped\n`
     const csvRows = data.map((row) => {
-      return `${row.period || 0},${row.northThrough || 0},${row.northLeft || 0},${row.northRight || 0},${row.northBikeThrough || 0},${row.northBikeLeft || 0},${row.northBikeRight || 0},${row.northHeavyThrough || 0},${row.northHeavyLeft || 0},${row.northHeavyRight || 0},${row.northPed || 0},${row.southThrough || 0},${row.southLeft || 0},${row.southRight || 0},${row.southBikeThrough || 0},${row.southBikeLeft || 0},${row.southBikeRight || 0},${row.southHeavyThrough || 0},${row.southHeavyLeft || 0},${row.southHeavyRight || 0},${row.southPed || 0},${row.eastThrough || 0},${row.eastLeft || 0},${row.eastRight || 0},${row.eastBikeThrough || 0},${row.eastBikeLeft || 0},${row.eastBikeRight || 0},${row.eastHeavyThrough || 0},${row.eastHeavyLeft || 0},${row.eastHeavyRight || 0},${row.eastPed || 0},${row.westThrough || 0},${row.westLeft || 0},${row.westRight || 0},${row.westBikeThrough || 0},${row.westBikeLeft || 0},${row.westBikeRight || 0},${row.westHeavyThrough || 0},${row.westHeavyLeft || 0},${row.westHeavyRight || 0},${row.westPed || 0}`;
+      return `${row.period || 0},${row.northThrough || 0},${
+        row.northLeft || 0
+      },${row.northRight || 0},${row.northBikeThrough || 0},${
+        row.northBikeLeft || 0
+      },${row.northBikeRight || 0},${row.northHeavyThrough || 0},${
+        row.northHeavyLeft || 0
+      },${row.northHeavyRight || 0},${row.northPed || 0},${
+        row.southThrough || 0
+      },${row.southLeft || 0},${row.southRight || 0},${
+        row.southBikeThrough || 0
+      },${row.southBikeLeft || 0},${row.southBikeRight || 0},${
+        row.southHeavyThrough || 0
+      },${row.southHeavyLeft || 0},${row.southHeavyRight || 0},${
+        row.southPed || 0
+      },${row.eastThrough || 0},${row.eastLeft || 0},${row.eastRight || 0},${
+        row.eastBikeThrough || 0
+      },${row.eastBikeLeft || 0},${row.eastBikeRight || 0},${
+        row.eastHeavyThrough || 0
+      },${row.eastHeavyLeft || 0},${row.eastHeavyRight || 0},${
+        row.eastPed || 0
+      },${row.westThrough || 0},${row.westLeft || 0},${row.westRight || 0},${
+        row.westBikeThrough || 0
+      },${row.westBikeLeft || 0},${row.westBikeRight || 0},${
+        row.westHeavyThrough || 0
+      },${row.westHeavyLeft || 0},${row.westHeavyRight || 0},${
+        row.westPed || 0
+      }`;
     });
+    console.log('finished')
 
-    const csvString = header1 + header2 + csvRows.join("\n");
+    
 
-    const currentDate = (formatDate(new Date()))
+    const csvString =
+      setupHeader1 +
+      setupHeader2 +
+      setupHeader3 +
+      setupHeader4 +
+      setupHeader5 +
+      setupHeader6 + 
+      setupHeader7 + 
+      header1 +
+      header2 +
+      csvRows.join("\n");
 
-    const fileUri = FileSystem.documentDirectory + `${northSouth}-${eastWest}-${currentDate}-${weather || ``}-${startHour}.csv`;
+    
+
+    const fileUri =
+      FileSystem.documentDirectory +
+      `${northSouth}-${eastWest}-${currentDate}-${
+        weather || ``
+      }-${startHour}.csv`;
 
     try {
       await FileSystem.writeAsStringAsync(fileUri, csvString, {
@@ -432,7 +500,10 @@ export const FormatModal = ({
 
       await Sharing.shareAsync(fileUri);
     } catch (error) {
-      Alert.alert("Error", "Could not create the CSV file. Do not include '/' in your names. Please try again.");
+      Alert.alert(
+        "Error",
+        "Could not create the CSV file. Do not include '/' in your names. Please try again."
+      );
     }
   };
 
@@ -440,131 +511,176 @@ export const FormatModal = ({
     <>
       {open && (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <BlurView
-          intensity={100}
-          style={{
-            flex: 1,
-            position: "absolute",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            zIndex: 10,
-            borderRadius: 10,
-            width: "100%",
-            height: "100%",
-            fontSize: 50,
-          }}
-        >
-          <View style={styles.container}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => setOpen(false)}
-              onLongPress={() => setOpen(false)}
-              onPressOut={() => setOpen(false)}
-            >
-              <Text style={styles.cancel}>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={csvDownload}
-              style={{ width: 100, height: 100 }}
-            >
-              <Text style={styles.submit}>Download File</Text>
-            </TouchableOpacity>
-            <TextInput
-              placeholder="North-South Street"
-              style={styles.input}
-              onChangeText={handleInputChange(setNorthSouth)}
-            />
-            <TextInput
-              placeholder="East-West Street"
-              style={styles.input}
-              onChangeText={handleInputChange(setEastWest)}
-            />
-            <TextInput
-              placeholder="Weather"
-              style={styles.input}
-              onChangeText={handleInputChange(setWeather)}
-            />
-            <TextInput
-              placeholder="Start Hour"
-              defaultValue={startHour}
-              inputMode="numeric"
-              style={{
-                position: "absolute",
-                backgroundColor: "rgba(255, 255, 255, 0.3)",
-                width: 90,
-                height: 30,
-                top: 230,
-                left: 240,
-                borderRadius: 10,
-                borderColor: "#2076e6",
-                padding: 3,
-                margin: 20,
-                borderWidth: 2,
-                fontSize: 20,
-              }}
-              onChangeText={handleInputChange(setStartHour)}
-            />
-            <Text style={{
+          <BlurView
+            intensity={100}
+            style={{
+              flex: 1,
               position: "absolute",
-              fontSize: 20,
-              top: 320,
-              left: 100,
-               }}>
-              Interval (min):
-            </Text>
-            <Text style={{
-              position: "absolute",
-              fontSize: 20,
-              top: 250,
-              left: 100,
-               }}>
-              Start Hour (24H):
-            </Text>
-            <TextInput
-              placeholder="Interval"
-              inputMode="numeric"
-              defaultValue="5"
-              style={{
-                position: "absolute",
-                backgroundColor: "rgba(255, 255, 255, 0.3)",
-                width: 90,
-                height: 30,
-                top: 300,
-                left: 240,
-                borderRadius: 10,
-                borderColor: "#2076e6",
-                padding: 3,
-                margin: 20,
-                borderWidth: 2,
-                fontSize: 20,
-              }}
-              onChangeText={handleInputChange(setInterval)}
-            />
-            <CompassButton
-              position={position}
-              setPosition={setPosition}
-              buttonDir={4}
-              buttonPos={[380, 140]}
-            />
-            <CompassButton
-              position={position}
-              setPosition={setPosition}
-              buttonDir={3}
-              buttonPos={[255, 140]}
-            />
-            <CompassButton
-              position={position}
-              setPosition={setPosition}
-              buttonDir={2}
-              buttonPos={[317.5, 206]}
-            />
-            <CompassButton
-              position={position}
-              setPosition={setPosition}
-              buttonDir={1}
-              buttonPos={[317.5, 76]}
-            />
-          </View>
-        </BlurView>
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              zIndex: 10,
+              borderRadius: 10,
+              width: "100%",
+              height: "100%",
+              fontSize: 50,
+            }}
+          >
+            <View style={styles.container}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => setOpen(false)}
+                onLongPress={() => setOpen(false)}
+                onPressOut={() => setOpen(false)}
+              >
+                <Text style={styles.cancel}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={csvDownload}
+                style={{ width: 100, height: 100 }}
+              >
+                <Text style={styles.submit}>Download File</Text>
+              </TouchableOpacity>
+              <TextInput
+                placeholder="North-South Street"
+                style={styles.input}
+                onChangeText={handleInputChange(setNorthSouth)}
+              />
+              <TextInput
+                placeholder="East-West Street"
+                style={styles.input}
+                onChangeText={handleInputChange(setEastWest)}
+              />
+              <TextInput
+                placeholder="Weather"
+                style={styles.input}
+                onChangeText={handleInputChange(setWeather)}
+              />
+              <TextInput
+                placeholder="Start Hour"
+                defaultValue={startHour}
+                inputMode="numeric"
+                style={{
+                  position: "absolute",
+                  backgroundColor: "rgba(255, 255, 255, 0.3)",
+                  width: 90,
+                  height: 30,
+                  top: 230,
+                  left: 240,
+                  borderRadius: 10,
+                  borderColor: "#2076e6",
+                  padding: 3,
+                  margin: 20,
+                  borderWidth: 2,
+                  fontSize: 20,
+                }}
+                onChangeText={handleInputChange(setStartHour)}
+              />
+
+              <TextInput
+                placeholder="City"
+                defaultValue={city}
+                style={{
+                  position: "absolute",
+                  backgroundColor: "rgba(255, 255, 255, 0.3)",
+                  width: 90,
+                  height: 30,
+                  top: 300,
+                  left: 390,
+                  borderRadius: 10,
+                  borderColor: "#2076e6",
+                  padding: 3,
+                  margin: 20,
+                  borderWidth: 2,
+                  fontSize: 20,
+                }}
+                onChangeText={handleInputChange(setCity)}
+              />
+
+              <TextInput
+                placeholder="State"
+                defaultValue={state}
+                inputMode="numeric"
+                style={{
+                  position: "absolute",
+                  backgroundColor: "rgba(255, 255, 255, 0.3)",
+                  width: 90,
+                  height: 30,
+                  top: 300,
+                  left: 490,
+                  borderRadius: 10,
+                  borderColor: "#2076e6",
+                  padding: 3,
+                  margin: 20,
+                  borderWidth: 2,
+                  fontSize: 20,
+                }}
+                onChangeText={handleInputChange(setState)}
+              />
+              <Text
+                style={{
+                  position: "absolute",
+                  fontSize: 20,
+                  top: 320,
+                  left: 100,
+                }}
+              >
+                Interval (min):
+              </Text>
+              <Text
+                style={{
+                  position: "absolute",
+                  fontSize: 20,
+                  top: 250,
+                  left: 100,
+                }}
+              >
+                Start Hour (24H):
+              </Text>
+              <TextInput
+                placeholder="Interval"
+                inputMode="numeric"
+                defaultValue="5"
+                style={{
+                  position: "absolute",
+                  backgroundColor: "rgba(255, 255, 255, 0.3)",
+                  width: 90,
+                  height: 30,
+                  top: 300,
+                  left: 240,
+                  borderRadius: 10,
+                  borderColor: "#2076e6",
+                  padding: 3,
+                  margin: 20,
+                  borderWidth: 2,
+                  fontSize: 20,
+                }}
+                onChangeText={handleInputChange(setInterval)}
+              />
+              <CompassButton
+                position={position}
+                setPosition={setPosition}
+                buttonDir={4}
+                buttonPos={[380, 140]}
+              />
+              <CompassButton
+                position={position}
+                setPosition={setPosition}
+                buttonDir={3}
+                buttonPos={[255, 140]}
+              />
+              <CompassButton
+                position={position}
+                setPosition={setPosition}
+                buttonDir={2}
+                buttonPos={[317.5, 206]}
+              />
+              <CompassButton
+                position={position}
+                setPosition={setPosition}
+                buttonDir={1}
+                buttonPos={[317.5, 76]}
+              />
+            </View>
+          </BlurView>
         </TouchableWithoutFeedback>
       )}
     </>
