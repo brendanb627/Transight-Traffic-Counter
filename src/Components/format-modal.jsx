@@ -441,7 +441,47 @@ export const FormatModal = ({
     const header1 = `Period,${northSouth} Northbound, , , , , , , , , ,${northSouth} Southbound, , , , , , , , , ,${eastWest} Eastbound, , , , , , , , , ,${eastWest} Westbound\n`;
     const header2 = `Period,NBL,NBT,NBR,NBL_Bike,NBT_Bike,NBR_Bike,NBL_Heavy,NBT_Heavy,NBR_Heavy,N_Ped,SBL,SBT,SBR,SBL_Bike,SBT_Bike,SBR_Bike,SBL_Heavy,SBT_Heavy,SBR_Heavy,S_Ped,EBL,EBT,EBR,EBL_Bike,EBT_Bike,EBR_Bike,EBL_Heavy,EBT_Heavy,EBR_Heavy,E_Ped,WBL,WBT,WBR,WBL_Bike,WBT_Bike,WBR_Bike,WBL_Heavy,WBT_Heavy,WBR_Heavy,W_Ped\n`
     const csvRows = data.map((row) => {
-      return `${row.period || 0},${row.northLeft || 0},${row.northBikeLeft || 0},${row.northBikeThrough || 0},${row.northBikeRight || 0},${row.northHeavyLeft || 0},${row.northHeavyThrough || 0},${row.northHeavyRight || 0},${row.northLeft || 0},${row.northPed || 0},${row.northRight || 0},${row.northThrough || 0},${row.southLeft || 0},${row.southBikeLeft || 0},${row.southBikeRight || 0},${row.southBikeThrough || 0},${row.southHeavyLeft || 0},${row.southHeavyRight || 0},${row.southHeavyThrough || 0},${row.southLeft || 0},${row.southPed || 0},${row.southRight || 0},${row.southThrough || 0},${row.eastLeft || 0},${row.eastBikeLeft || 0},${row.eastBikeRight || 0},${row.eastBikeThrough || 0},${row.eastHeavyLeft || 0},${row.eastHeavyRight || 0},${row.eastHeavyThrough || 0},${row.eastLeft || 0},${row.eastPed || 0},${row.eastRight || 0},${row.eastThrough || 0},${row.westLeft || 0},${row.westBikeLeft || 0},${row.westBikeRight || 0},${row.westBikeThrough || 0},${row.westHeavyLeft || 0},${row.westHeavyRight || 0},${row.westHeavyThrough || 0},${row.westLeft || 0},${row.westPed || 0},${row.westRight || 0},${row.westThrough || 0}`;
+      return `${row.period || 0},` + // Period
+         `${row.northLeft || 0},` + // NBL (North Bound Left)
+         `${row.northThrough || 0},` + // NBT (North Bound Through)
+         `${row.northRight || 0},` + // NBR (North Bound Right)
+         `${row.northBikeLeft || 0},` + // NBL_Bike
+         `${row.northBikeThrough || 0},` + // NBT_Bike
+         `${row.northBikeRight || 0},` + // NBR_Bike
+         `${row.northHeavyLeft || 0},` + // NBL_Heavy
+         `${row.northHeavyThrough || 0},` + // NBT_Heavy
+         `${row.northHeavyRight || 0},` + // NBR_Heavy
+         `${row.northPed || 0},` + // N_Ped
+         `${row.southLeft || 0},` + // SBL
+         `${row.southThrough || 0},` + // SBT
+         `${row.southRight || 0},` + // SBR
+         `${row.southBikeLeft || 0},` + // SBL_Bike
+         `${row.southBikeThrough || 0},` + // SBT_Bike
+         `${row.southBikeRight || 0},` + // SBR_Bike
+         `${row.southHeavyLeft || 0},` + // SBL_Heavy
+         `${row.southHeavyThrough || 0},` + // SBT_Heavy
+         `${row.southHeavyRight || 0},` + // SBR_Heavy
+         `${row.southPed || 0},` + // S_Ped
+         `${row.eastLeft || 0},` + // EBL
+         `${row.eastThrough || 0},` + // EBT
+         `${row.eastRight || 0},` + // EBR
+         `${row.eastBikeLeft || 0},` + // EBL_Bike
+         `${row.eastBikeThrough || 0},` + // EBT_Bike
+         `${row.eastBikeRight || 0},` + // EBR_Bike
+         `${row.eastHeavyLeft || 0},` + // EBL_Heavy
+         `${row.eastHeavyThrough || 0},` + // EBT_Heavy
+         `${row.eastHeavyRight || 0},` + // EBR_Heavy
+         `${row.eastPed || 0},` + // E_Ped
+         `${row.westLeft || 0},` + // WBL
+         `${row.westThrough || 0},` + // WBT
+         `${row.westRight || 0},` + // WBR
+         `${row.westBikeLeft || 0},` + // WBL_Bike
+         `${row.westBikeThrough || 0},` + // WBT_Bike
+         `${row.westBikeRight || 0},` + // WBR_Bike
+         `${row.westHeavyLeft || 0},` + // WBL_Heavy
+         `${row.westHeavyThrough || 0},` + // WBT_Heavy
+         `${row.westHeavyRight || 0},` + // WBR_Heavy
+         `${row.westPed || 0}\n`; // W_Ped
     });
     console.log('finished')
 
