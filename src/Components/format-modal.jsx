@@ -62,21 +62,25 @@ export const FormatModal = ({
       setEastBound(eastBoundInit);
       setSouthBound(southBoundInit);
       setWestBound(westBoundInit);
-    } else if (position == 2) {
+      console.log('1')
+    } else if (position == 4) {
       setNorthBound(westBoundInit);
       setEastBound(northBoundInit);
       setSouthBound(eastBoundInit);
       setWestBound(southBoundInit);
-    } else if (position == 3) {
+      console.log('2')
+    } else if (position == 2) {
       setNorthBound(southBoundInit);
       setEastBound(westBoundInit);
       setSouthBound(northBoundInit);
       setWestBound(eastBoundInit);
-    } else if (position == 4) {
+      console.log('3')
+    } else if (position == 3) {
       setNorthBound(eastBoundInit);
       setEastBound(southBoundInit);
       setSouthBound(westBoundInit);
       setWestBound(northBoundInit);
+      console.log('4')
     }
   };
 
