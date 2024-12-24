@@ -13,7 +13,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.brendanb627.TransightTrafficCounter"
+      "bundleIdentifier": "com.brendanb627.TransightTrafficCounter",
+      "buildNumber": "17"
     },
     "android": {
       "adaptiveIcon": {
