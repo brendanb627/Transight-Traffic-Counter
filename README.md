@@ -6,4 +6,4 @@
 
 #### Version: v1.0.2
 1.0.2 fixes many bugs including the compass dial not changing the inputs to the corresponding direction and fixes the output csv file format to corrrectly represent the specified column
-#### Updated Date: 11/2/2024
+#### Updated Date: 12/27/2024
