@@ -569,7 +569,7 @@ export const FormatModal = ({
                 onPress={csvDownload}
                 style={{ width: 100, height: 100 }}
               >
-                <Text style={styles.submit}>Download File</Text>
+                <Text style={styles.submit}>Save & Share</Text>
               </TouchableOpacity>
               <TextInput
                 placeholder="North-South Street"
