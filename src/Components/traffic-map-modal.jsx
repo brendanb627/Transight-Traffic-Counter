@@ -8,7 +8,10 @@ import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
 
 const TrafficMapModal = ({ open, setOpen }) => {
-  const [visible, setVisible] = useState(false);
+  const MAX_API_CALLS = 100
+  let apiCallCount = 0
+  const MAPS_API_KEY = process.env.MAPS_API_KEY
+  const [visible, setVisible] = useState(false)
 
   // AsyncStorage.setItem(
   //   "northSouth,eastWest,city,state",
@@ -91,16 +94,22 @@ const TrafficMapModal = ({ open, setOpen }) => {
     countData
   ) => {
     try {
+      if (apiCallCount >= MAX_API_CALLS) {
+        console.warn("API call limit reached. No further calls will be made.");
+        return;
+      }
+      
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
           `${northSouth} and ${eastWest}, ${city}, ${state}`
-        )}&key=AIzaSyBc4g8mPn_BpYogZn8ef-Z-NEPn06t2o_E`
+        )}&key=${MAPS_API_KEY}`
       );
       console.log(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
           `${northSouth} and ${eastWest}, ${city}, ${state}`
-        )}&key=AIzaSyBc4g8mPn_BpYogZn8ef-Z-NEPn06t2o_E`
+        )}&key=${MAPS_API_KEY}`
       );
+      apiCallCount++
       const data = await response.json();
       if (data.status === "OK" && data.results.length > 0) {
         const { lat, lng } = data.results[0].geometry.location;
