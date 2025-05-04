@@ -18,6 +18,7 @@ import { Link } from "expo-router";
 import { FormatModal } from "../Components/format-modal";
 import { PedestrianButton } from "../Components/pedestrian-button";
 import { Touchable } from "react-native";
+import TrafficMapModal from "../Components/traffic-map-modal";
 
 const CountScreen = () => {
   const [giveWarning, setGiveWarning] = useState(false);
@@ -113,6 +114,7 @@ const CountScreen = () => {
 
   const [countStarted, setCountStarted] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [mapVisible, setMapVisible] = useState(false);
   const [highestTime, setHighestTime] = useState(0);
   const [startDate, setStartDate] = useState(0);
 
@@ -558,6 +560,10 @@ const CountScreen = () => {
         westBoundInit={westBound}
         highestTime={highestTime}
       />
+      <TrafficMapModal
+        open={mapVisible}
+        setOpen={setMapVisible}
+      />
       <TouchableOpacity onPress={() => csvDownload()} style={{
         width: 0,
       }}>
@@ -572,6 +578,23 @@ const CountScreen = () => {
           }}
         >
           Menu
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setMapVisible(true)} style={{
+        width: 0,
+      }}>
+        <Text
+          style={{
+            width: 50,
+            color: "#2282ff",
+            fontSize: 20,
+            fontWeight: 400,
+            left: 200,
+            top: -170,
+            position: "absolute",
+          }}
+        >
+          Map
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={resetCounts} color="#55ff55">

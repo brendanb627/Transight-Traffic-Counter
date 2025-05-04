@@ -19,6 +19,7 @@ import * as FileSystem from "expo-file-system";
 import { Link } from "expo-router";
 import { BlurView } from "expo-blur";
 import { CompassButton } from "../Sub-Components/compass-button";
+import  AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const FormatModal = ({
   open,
@@ -42,6 +43,7 @@ export const FormatModal = ({
   const [westBound, setWestBound] = useState({});
   const [city, setCity] = useState('Bend');
   const [state, setState] = useState('OR')
+
 
   useEffect(() => {
     assignPosition();
@@ -515,9 +517,21 @@ export const FormatModal = ({
       await FileSystem.writeAsStringAsync(fileUri, csvString, {
         encoding: FileSystem.EncodingType.UTF8,
       });
+      await AsyncStorage.getItem("dataIndex", (prevDataIndex) => {
+        if (prevDataIndex === null || prevDataIndex === undefined) {
+          AsyncStorage.setItem("dataIndex", `${northSouth}-${eastWest}-${currentDate}\n`);
+        } else {
+          AsyncStorage.setItem("dataIndex", prevDataIndex + `${northSouth},${eastWest},${city},${state},${currentDate}\n`);
+        }
+      });
+      await AsyncStorage.setItem(`${northSouth}-${eastWest}-${currentDate}`, csvString);
 
       await Sharing.shareAsync(fileUri);
+      const datas = await AsyncStorage.getItem(`dataIndex`);
+      console.log("data: " + datas);
+
     } catch (error) {
+      console.log(error)
       Alert.alert(
         "Error",
         "Could not create the CSV file. Do not include '/' in your names. Please try again."

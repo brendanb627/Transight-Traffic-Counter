@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from './src/Screens/home-screen';
 import CountScreen from './src/Screens/count-screen';
 import { FormatModal } from './src/Components/format-modal';
+import TrafficMapModal from './src/Components/traffic-map-modal';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
