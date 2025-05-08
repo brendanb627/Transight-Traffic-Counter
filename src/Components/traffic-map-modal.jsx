@@ -10,7 +10,6 @@ import * as FileSystem from "expo-file-system";
 const TrafficMapModal = ({ open, setOpen }) => {
   const MAX_API_CALLS = 300
   let apiCallCount = 0
-  const MAPS_API_KEY = process.env.MAPS_API_KEY
   const [visible, setVisible] = useState(false)
 
   // AsyncStorage.setItem(
@@ -100,19 +99,18 @@ const TrafficMapModal = ({ open, setOpen }) => {
       }
 
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-          `${northSouth} and ${eastWest}, ${city}, ${state}`
-        )}&key=${MAPS_API_KEY}`
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+          `${northSouth}, ${city}, ${state}`
+        )}&format=json`
       );
-      console.log(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-          `${northSouth} and ${eastWest}, ${city}, ${state}`
-        )}&key=${MAPS_API_KEY}`
-      );
+      console.log(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+          `${northSouth}, ${city}, ${state}`
+        )}&format=json`)
       apiCallCount++
       const data = await response.json();
-      if (data.status === "OK" && data.results.length > 0) {
-        const { lat, lng } = data.results[0].geometry.location;
+      if (data[0]?.place_id) {
+        const lat = data[0].lat
+        const lng = data[0].lon;
 
         const dateNow = new Date();
         const year = date.match(/\d+$/)[0];
