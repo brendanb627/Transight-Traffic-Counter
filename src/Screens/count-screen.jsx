@@ -591,13 +591,14 @@ const CountScreen = () => {
       }}>
         <Text
           style={{
+            position: "absolute",
             width: 50,
             height: 40,
             color: "#2282ff",
             fontSize: 20,
             fontWeight: 400,
-            left: -140,
-            top: -25,
+            left: 70,
+            top: 5
           }}
         >
           Map{" "}
