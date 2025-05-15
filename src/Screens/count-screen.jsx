@@ -118,6 +118,11 @@ const CountScreen = () => {
   const [highestTime, setHighestTime] = useState(0);
   const [startDate, setStartDate] = useState(0);
 
+
+  const openModal = () => {
+
+    setMapVisible(true);
+  }
   const resetCounts = () => {
     Alert.alert(
       "Confirm New Count",
@@ -570,31 +575,32 @@ const CountScreen = () => {
         <Text
           style={{
             width: 50,
+            height: 40,
             color: "#2282ff",
             fontSize: 20,
             fontWeight: 400,
             left: -140,
-            top: -15,
+            top: -5,
           }}
         >
           Menu
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setMapVisible(true)} style={{
+      <TouchableOpacity onPress={() => openModal()} style={{
         width: 0,
       }}>
         <Text
           style={{
             width: 50,
+            height: 40,
             color: "#2282ff",
             fontSize: 20,
             fontWeight: 400,
-            left: 200,
-            top: -170,
-            position: "absolute",
+            left: -140,
+            top: -25,
           }}
         >
-          Map
+          Map{" "}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={resetCounts} color="#55ff55">
